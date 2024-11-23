@@ -7,7 +7,7 @@ export type GeoCodingAPIResponse = {
   state: string;
 };
 
-export type GeoCodingAPIResponseList = Record<number, GeoCodingAPIResponse>;
+export type GeoCodingAPIResponseList = GeoCodingAPIResponse[];
 
 export type GeoCodingAPIErrorResponse = {
   cod: string;
