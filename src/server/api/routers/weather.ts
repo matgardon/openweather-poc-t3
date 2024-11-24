@@ -7,7 +7,7 @@ import {
   // protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { type OneCallResponse } from "~/server/types/OpenWeatherMapOneCall";
+import { type OneCallResponse } from "~/types/OpenWeatherMapOneCall";
 
 //TODO handle null/not found before querying + streamined way to access it using env.js
 const openWeatherMapApiKey = process.env.OPENWEATHER_APIKEY;

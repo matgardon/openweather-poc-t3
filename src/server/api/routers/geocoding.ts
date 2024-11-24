@@ -7,7 +7,7 @@ import {
   // protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { type GeoCodingAPIResponseList } from "~/server/types/OpenWeatherMapGeocoding";
+import { type GeoCodingAPIResponseList } from "~/types/OpenWeatherMapGeocoding";
 
 //TODO handle null/not found before querying + streamined way to access it using env.js
 const openWeatherMapApiKey = process.env.OPENWEATHER_APIKEY;
