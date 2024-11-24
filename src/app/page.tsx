@@ -2,14 +2,15 @@ import Link from "next/link";
 
 import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
-import { SearchLocations } from "./_components/searchLocations";
+import { SearchLocations } from "./_components/SearchLocations";
 
 export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
   const session = await auth();
 
   if (session?.user) {
-    void api.post.getLatest.prefetch();
+    //TODO : prefetch 5 closest locations
+    // void api.post.getLatest.prefetch();
   }
 
   return (
