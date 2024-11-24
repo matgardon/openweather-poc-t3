@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useDebounce } from "react-use";
 
@@ -44,7 +45,20 @@ export function SearchLocations() {
       <div>
         {searchResults?.data?.map((location) => (
           <div key={`${location.name}-${location.lat}-${location.lon}`}>
-            {location.name} - {location.country}
+            <Link
+              href={{
+                pathname: "/weather",
+                // TODO how to type // pass type to ServerComponent
+                query: {
+                  lat: location.lat,
+                  lon: location.lon,
+                  name: location.name,
+                  country: location.country,
+                },
+              }}
+            >
+              {location.name} - {location.country}
+            </Link>
           </div>
         ))}
       </div>

@@ -10,7 +10,7 @@ import {
   getSunTime,
   getPop,
   isNullish,
-} from "./../_helpers";
+} from "../_helpers";
 
 import {
   type CurrentWeather,
