@@ -18,7 +18,7 @@ export function SearchLocations() {
     () => {
       setDebouncedValue(searchInput);
     },
-    300,
+    150,
     [searchInput],
   );
 
@@ -34,17 +34,17 @@ export function SearchLocations() {
   );
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-5xl px-5">
       <input
         type="text"
-        placeholder="Search for a city"
+        placeholder="Search location ..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
-        className="w-full rounded-full px-4 py-2 text-black"
+        className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-black focus:border-gray-500 focus:outline-none"
       />
-      <div>
-        {searchResults?.data?.map((location) => (
-          <div key={`${location.name}-${location.lat}-${location.lon}`}>
+      <div className="mx-auto max-w-[80%] py-4 text-center">
+        {searchResults?.data?.map((location, index) => (
+          <div key={index}>
             <Link
               href={{
                 pathname: "/weather",
@@ -56,8 +56,11 @@ export function SearchLocations() {
                   country: location.country,
                 },
               }}
+              onClick={() => setSearchInput("")}
             >
-              {location.name} - {location.country}
+              <span className="text-xl">
+                {location.name} - {location.country}
+              </span>
             </Link>
           </div>
         ))}
