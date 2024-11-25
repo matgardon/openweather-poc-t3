@@ -1,5 +1,4 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
-import { postRouter } from "~/server/api/routers/post";
 import { geocodingRouter } from "./routers/geocoding";
 import { weatherRouter } from "./routers/weather";
 
@@ -9,7 +8,6 @@ import { weatherRouter } from "./routers/weather";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
   geocoding: geocodingRouter,
   weather: weatherRouter,
 });
