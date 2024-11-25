@@ -1,7 +1,9 @@
-import { auth } from "~/server/auth";
+// import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 import { Forecast } from "./Forecast";
 import { type OneCallResponse } from "~/types/OpenWeatherMapOneCall";
+import { SearchLocations } from "../_components/SearchLocations";
+import { isNullish } from "../_helpers";
 
 type Props = {
   // https://nextjs.org/docs/app/api-reference/file-conventions/page#searchparams-optional
@@ -12,13 +14,20 @@ export default async function Weather({ searchParams }: Props) {
   // TODO: handle type validation on searchParams
   const name = ((await searchParams).name ?? "") as string;
   const country = ((await searchParams).country ?? "") as string;
-  const lat = Number((await searchParams).lat ?? 0);
-  const lon = Number((await searchParams).lon ?? 0);
+  const stringLat = (await searchParams).lat;
+  const stringLon = (await searchParams).lon;
 
-  const session = await auth();
+  const lat = stringLat ? Number(stringLat) : null;
+  const lon = stringLon ? Number(stringLon) : null;
 
   let weatherResult: OneCallResponse | null = null;
-  if (session?.user) {
+
+  // const session = await auth();
+  // TODO: enable add to favs if authenticated
+  // if (session?.user) {
+  // }
+
+  if (!isNullish(lat) && !isNullish(lon)) {
     try {
       //TODO : prefetch wether for given URL, in order to benefit from HydrateClient
       weatherResult = await api.weather.getWeather({ lat, lon });
@@ -26,20 +35,19 @@ export default async function Weather({ searchParams }: Props) {
       // TODO handle user feedback
       console.error(getWeatherError);
     }
-
-    return (
-      <HydrateClient>
-        {!!weatherResult && (
-          <Forecast
-            currentLocation={{ name, country, lat, lon }}
-            now={weatherResult.current}
-            daily={weatherResult.daily}
-            hourly={weatherResult.hourly}
-          />
-        )}
-      </HydrateClient>
-    );
   }
 
-  // TODO handle unauthenticated
+  return (
+    <HydrateClient>
+      <SearchLocations />
+      {!!weatherResult && (
+        <Forecast
+          currentLocation={{ name, country, lat, lon }}
+          now={weatherResult.current}
+          daily={weatherResult.daily}
+          hourly={weatherResult.hourly}
+        />
+      )}
+    </HydrateClient>
+  );
 }
