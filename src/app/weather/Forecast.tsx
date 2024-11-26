@@ -20,6 +20,7 @@ import {
 import { type GeoCodingAPIResponse } from "~/types/OpenWeatherMapGeocoding";
 import StarIcon from "../_components/StarIcon";
 import ToggleFavoriteLocation from "../_components/ToggleFavoriteLocation";
+import { auth } from "~/server/auth";
 
 type Props = {
   currentLocation: Partial<GeoCodingAPIResponse>;
@@ -36,6 +37,8 @@ export default async function Forecast({
 }: Props) {
   const today = daily[0];
 
+  const session = await auth();
+
   /* TODO: handle fallbacks when now not available */
   return (
     <div className="backdrop-blur-ls h-full w-full rounded bg-white bg-opacity-20 py-4 drop-shadow-lg md:px-10 md:py-4 lg:h-auto lg:px-24">
@@ -45,10 +48,8 @@ export default async function Forecast({
           <h2 className="text-2xl font-black">
             {currentLocation.name}{" "}
             <span className="font-thin">{currentLocation.country}</span>
-            <ToggleFavoriteLocation
-              className="ml-2 inline"
-              location={currentLocation}
-            />
+            {/* favorites are only available to authenticated users */}
+            {session && <ToggleFavoriteLocation location={currentLocation} />}
           </h2>
           <h1 className="text-4xl font-extrabold">
             <Degree temp={Math.round(now.temp)} />

@@ -22,11 +22,6 @@ export default async function Weather({ searchParams }: Props) {
 
   let weatherResult: OneCallResponse | null = null;
 
-  // const session = await auth();
-  // TODO: enable add to favs if authenticated
-  // if (session?.user) {
-  // }
-
   if (!isNullish(lat) && !isNullish(lon)) {
     try {
       //TODO : prefetch wether for given URL, in order to benefit from HydrateClient
