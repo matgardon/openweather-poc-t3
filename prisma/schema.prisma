@@ -17,6 +17,7 @@ datasource db {
 model FavoriteLocation {
     id          Int      @id @default(autoincrement())
     name        String
+    // TODO constrain as 2 chars (we only get ISO countryCode)
     country     String
     // TODO seriously wrong, but prisma does not support native postGIS/geojson fields ...
     // see https://github.com/prisma/prisma/issues/1798
