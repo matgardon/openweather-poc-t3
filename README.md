@@ -3,6 +3,19 @@
 small poc to explore t3 stack capabilities on openweather API
 similar to what is [presented here](https://theultimateapichallenge.com/challenges/weather-typescript-api)
 
+## prerequisites
+
+- node20 (TODO: setup volta)
+- docker (at least for the containerized DB)
+- vscode with prettier, prisma, tailwind extensions (advised but not mandatory)
+
+## initial setup
+
+- NextAuth: follow steps from `.env.example` and apply to your local `.env` file to generate a local secret & add your discord API key to support discord SSO
+- DB: run the `./start-database.sh` script. On first run, it will ask for a DB password or will generate one, which you must add to `.env` file.
+- Prisma: run `pnpm db:generate` then `pnpm db:push`
+- OpenWeatherMap: get an API_KEY from [OneCallAI 3.0](https://openweathermap.org/api/one-call-3) : you need to provide billing info but then fix the daily usage to the free tier (1000 hits/d) to not be billed for anything. Then fill that key to the corresponding env var `OPENWEATHER_APIKEY`.
+
 ## local dev
 
 start DB & dev server
@@ -16,6 +29,21 @@ stop dev DB
 
 ```sh
 docker stop openweather-poc-t3-postgres
+```
+
+## docker build
+
+```bash
+docker build -t openweather-poc-t3 --build-arg NEXT_PUBLIC_CLIENTVAR=clientvar .
+docker run -p 3000:3000 -e DATABASE_URL="database_url_goes_here" openweather-poc-t3
+```
+
+then open <localhost:3000> to see your running application.
+
+Alternatively you can use docker-compose:
+
+```bash
+docker compose up --build
 ```
 
 ## TODO list
@@ -53,4 +81,6 @@ NAVIGATION
 CI/CD
 [] support cleaner secret management for OW API, DB & SSO token access
 [] support vercel deploy out of curiosity ? => which PAAS for the DB ?
-[] add/improve docker image & docker-compose for deploy
+[] test railway deploy (<https://create.t3.gg/en/deployment/docker#deploy-to-railway>)
+[X] add/improve docker image & docker-compose for deploy
+[X] add bare-minimum readme
