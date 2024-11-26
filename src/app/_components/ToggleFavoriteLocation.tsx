@@ -9,6 +9,8 @@ export default function ToggleFavoriteLocation({
 }: {
   location: Partial<GeoCodingAPIResponse>;
 }) {
+  // TODO: get user session // make sure user is authenticated or return null (not yet necessary because Forecast filters on this)
+
   const [favoriteLocations] = api.favoriteLocation.getAll.useSuspenseQuery();
 
   const favoriteLocation = favoriteLocations.find(
