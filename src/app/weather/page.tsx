@@ -1,6 +1,6 @@
 // import { auth } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
-import { Forecast } from "./Forecast";
+import Forecast from "./Forecast";
 import { type OneCallResponse } from "~/types/OpenWeatherMapOneCall";
 import { SearchLocations } from "../_components/SearchLocations";
 import { isNullish } from "../_helpers";
@@ -40,7 +40,8 @@ export default async function Weather({ searchParams }: Props) {
   return (
     <HydrateClient>
       <SearchLocations />
-      {!!weatherResult && (
+      {/* TOFIX redundant type check because TS doesn't infer far enough */}
+      {!!weatherResult && !isNullish(lat) && !isNullish(lon) && (
         <Forecast
           currentLocation={{ name, country, lat, lon }}
           now={weatherResult.current}
