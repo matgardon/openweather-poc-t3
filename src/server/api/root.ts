@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { geocodingRouter } from "./routers/geocoding";
 import { weatherRouter } from "./routers/weather";
+import { favoriteLocationRouter } from "./routers/favoriteLocation";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { weatherRouter } from "./routers/weather";
 export const appRouter = createTRPCRouter({
   geocoding: geocodingRouter,
   weather: weatherRouter,
+  favoriteLocation: favoriteLocationRouter,
 });
 
 // export type definition of API
