@@ -14,13 +14,17 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
+model FavoriteLocation {
+    id          Int      @id @default(autoincrement())
+    name        String
+    // TODO constrain as 2 chars (we only get ISO countryCode)
+    country     String
+    // TODO seriously wrong, but prisma does not support native postGIS/geojson fields ...
+    // see https://github.com/prisma/prisma/issues/1798
+    lat         String
+    lon         String
+    createdAt   DateTime @default(now())
+    createdBy   User     @relation(fields: [createdById], references: [id])
     createdById String
 
     @@index([name])
@@ -55,14 +59,14 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    id                String             @id @default(cuid())
+    name              String?
+    email             String?            @unique
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    sessions          Session[]
+    favoriteLocations FavoriteLocation[]
 }
 
 model VerificationToken {

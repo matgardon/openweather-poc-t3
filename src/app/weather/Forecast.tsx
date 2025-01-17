@@ -18,6 +18,9 @@ import {
   type Hourly,
 } from "~/types/OpenWeatherMapOneCall";
 import { type GeoCodingAPIResponse } from "~/types/OpenWeatherMapGeocoding";
+import StarIcon from "../_components/StarIcon";
+import ToggleFavoriteLocation from "../_components/ToggleFavoriteLocation";
+import { auth } from "~/server/auth";
 
 type Props = {
   currentLocation: Partial<GeoCodingAPIResponse>;
@@ -26,8 +29,15 @@ type Props = {
   daily: Daily[];
 };
 
-export function Forecast({ currentLocation, now, daily, hourly }: Props) {
+export default async function Forecast({
+  currentLocation,
+  now,
+  daily,
+  hourly,
+}: Props) {
   const today = daily[0];
+
+  const session = await auth();
 
   /* TODO: handle fallbacks when now not available */
   return (
@@ -38,6 +48,8 @@ export function Forecast({ currentLocation, now, daily, hourly }: Props) {
           <h2 className="text-2xl font-black">
             {currentLocation.name}{" "}
             <span className="font-thin">{currentLocation.country}</span>
+            {/* favorites are only available to authenticated users */}
+            {session && <ToggleFavoriteLocation location={currentLocation} />}
           </h2>
           <h1 className="text-4xl font-extrabold">
             <Degree temp={Math.round(now.temp)} />
